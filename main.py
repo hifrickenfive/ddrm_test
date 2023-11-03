@@ -28,6 +28,11 @@ def parse_args_and_config():
     "--data_folder", type=str, default="", help="The folder name of the data in exp"
     )
     parser.add_argument(
+        "--no_degrade", 
+        action="store_true",
+        help="Skip apply degradation"
+    )
+    parser.add_argument(
         "--doc",
         type=str,
         required=True,

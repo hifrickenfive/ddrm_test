@@ -278,15 +278,20 @@ class Diffusion(object):
         pbar = tqdm.tqdm(val_loader)
         for x_orig, classes in pbar:
             x_orig = x_orig.to(self.device)
-            x_orig = data_transform(self.config, x_orig)
+            x_orig = data_transform(self.config, x_orig) # 1, 3, 256, 256
 
-            y_0 = H_funcs.H(x_orig)
-            y_0 = y_0 + sigma_0 * torch.randn_like(y_0)
+            if args.no_degrade:
+                y_0 = x_orig # TODO y_0 needs to be 1, 12288
+                pinv_y_0 = x_orig
+            else:
+                y_0 = H_funcs.H(x_orig)
+                y_0 = y_0 + sigma_0 * torch.randn_like(y_0)
 
-            pinv_y_0 = H_funcs.H_pinv(y_0).view(y_0.shape[0], config.data.channels, self.config.data.image_size, self.config.data.image_size)
-            if deg[:6] == 'deblur': pinv_y_0 = y_0.view(y_0.shape[0], config.data.channels, self.config.data.image_size, self.config.data.image_size)
-            elif deg == 'color': pinv_y_0 = y_0.view(y_0.shape[0], 1, self.config.data.image_size, self.config.data.image_size).repeat(1, 3, 1, 1)
-            elif deg[:3] == 'inp': pinv_y_0 += H_funcs.H_pinv(H_funcs.H(torch.ones_like(pinv_y_0))).reshape(*pinv_y_0.shape) - 1
+                # TODO understand pinv_y_0. It is 1, 3, 256, 256
+                pinv_y_0 = H_funcs.H_pinv(y_0).view(y_0.shape[0], config.data.channels, self.config.data.image_size, self.config.data.image_size)
+                if deg[:6] == 'deblur': pinv_y_0 = y_0.view(y_0.shape[0], config.data.channels, self.config.data.image_size, self.config.data.image_size)
+                elif deg == 'color': pinv_y_0 = y_0.view(y_0.shape[0], 1, self.config.data.image_size, self.config.data.image_size).repeat(1, 3, 1, 1)
+                elif deg[:3] == 'inp': pinv_y_0 += H_funcs.H_pinv(H_funcs.H(torch.ones_like(pinv_y_0))).reshape(*pinv_y_0.shape) - 1
 
             for i in range(len(pinv_y_0)):
                 tvu.save_image(
@@ -296,7 +301,7 @@ class Diffusion(object):
                     inverse_data_transform(config, x_orig[i]), os.path.join(self.args.image_folder, f"orig_{idx_so_far + i}.png")
                 )
 
-            ##Begin DDIM
+            ##Begin Denoising diffusion implicit model (DDIM) Song et al. (2021)
             x = torch.randn(
                 y_0.shape[0],
                 config.data.channels,
