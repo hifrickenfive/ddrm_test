@@ -25,6 +25,9 @@ def parse_args_and_config():
         "--exp", type=str, default="exp", help="Path for saving running related data."
     )
     parser.add_argument(
+    "--data_folder", type=str, default="", help="The folder name of the data in exp"
+    )
+    parser.add_argument(
         "--doc",
         type=str,
         required=True,
