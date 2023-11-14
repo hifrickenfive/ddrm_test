@@ -281,7 +281,9 @@ class Diffusion(object):
             x_orig = data_transform(self.config, x_orig) # 1, 3, 256, 256
 
             if args.no_degrade:
-                y_0 = x_orig # TODO y_0 needs to be 1, 12288
+                from functions.svd_replacement import Denoising # HACK. Override args.deg. Denoising H_funcs only transforms x_orig's shape
+                H_funcs = Denoising(config.data.channels, self.config.data.image_size, self.device)
+                y_0 = H_funcs.H(x_orig)
                 pinv_y_0 = x_orig
             else:
                 y_0 = H_funcs.H(x_orig)

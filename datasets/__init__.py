@@ -112,7 +112,7 @@ def get_dataset(args, config):
     elif config.data.dataset == "LSUN":
         if config.data.out_of_dist:
             if args.data_folder:
-                path_to_data = os.path.join(args.exp, args.data_folder)
+                path_to_data = os.path.join(args.exp, args.data_folder) # HACK 
             else:
                 path_to_data = os.path.join(args.exp, 'datasets', "ood_{}".format(config.data.category)) # Default
 
