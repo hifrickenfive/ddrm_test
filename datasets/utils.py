@@ -3,7 +3,8 @@ import os.path
 import hashlib
 import errno
 from torch.utils.model_zoo import tqdm
-
+from PIL import Image
+import os
 
 def gen_bar_updater():
     pbar = tqdm(total=None)
@@ -184,3 +185,29 @@ def _save_response_content(response, destination, chunk_size=32768):
                 progress += len(chunk)
                 pbar.update(progress - pbar.n)
         pbar.close()
+
+
+def crop_image_to_256x256(input_path, output_path):
+    try:
+        with Image.open(input_path) as img:
+            width, height = img.size
+
+            if width < 256 or height < 256:
+                print(f"Image {input_path} is smaller than 256x256. Skipping.")
+                return
+
+            # Calculate the left, top, right, and bottom coordinates for cropping
+            left = (width - 256)/2
+            top = (height - 256)/2
+            right = (width + 256)/2
+            bottom = (height + 256)/2
+
+            # Crop the image
+            img_cropped = img.crop((left, top, right, bottom))
+
+            # Save the cropped image
+            img_cropped.save(output_path)
+            print(f"Image saved to {output_path}")
+
+    except IOError:
+        print(f"Error opening or processing image {input_path}")
