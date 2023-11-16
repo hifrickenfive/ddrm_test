@@ -1,5 +1,10 @@
 # Current goal: Experiment with vanilla DDRM to get better results
 
+# Questions
+- To evaluate the DDRM technique on street scenes for AV use case do we need to train our own diffusion model to sample from? If yes, how feasible is this? 
+https://github.com/openai/improved-diffusion?
+- Why might Chunming's diffusion model have no initial success?
+- DDNM looks for integration friendly https://github.com/wyhuai/DDNM/blob/main/README.md
 # TODO
 [ ] Benchmark/baseline 10 imgs from LSUN bedroom
 [x] Denoise a single raindrop img 2min20s GCP 1xNvidia T4
@@ -9,7 +14,7 @@
     [ ] Update PSNR evaluation function. The code needs to know the where the clean image is (before noise added) for PSNR evaluation https://github.com/bahjat-kawar/ddrm/issues/3 
 [X] Denoise 10 raindrop images
     - OOM issues on GCP. Bumped to 16 cores/60GB ram. Took 20mins with 4 workers.
-[ ] Experiment with vanilla DDRM to get better results
+[X] Experiment with vanilla DDRM to get better results
 [ ] Create appropriate config.yml for raindrop dataset
 [ ] Swap out pretrained diffusion model 
     - deep gen prior Chunming with street scenes, which only applies lin transformation
