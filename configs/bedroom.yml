@@ -8,7 +8,7 @@ data:
     gaussian_dequantization: false
     random_flip: true
     rescaled: true
-    num_workers: 4 # default is 32. My aws instance only has 8 cores, my gcp has 4
+    num_workers: 16 # default is 32. My aws instance only has 8 cores, my gcp has 4
     out_of_dist: true
 
 model:
