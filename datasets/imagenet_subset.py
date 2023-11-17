@@ -78,7 +78,8 @@ class ImageDataset(data.Dataset):
         self.num = len(lines)
         self.metas = []
         self.classifier = None
-        suffix =  ".jpeg"
+        # suffix =  ".jpeg" # imagenet_val_1k.txt already has a .JPEG suffix. This adds an extra suffix
+        suffix = "" 
         for line in lines:
             line_split = line.rstrip().split()
             if len(line_split) == 2:
