@@ -187,13 +187,13 @@ def _save_response_content(response, destination, chunk_size=32768):
         pbar.close()
 
 
-def crop_image_to_256x256(input_path, output_path):
+def crop_image_to_256x256(input_full_path, output_path):
     try:
-        with Image.open(input_path) as img:
+        with Image.open(input_full_path) as img:
             width, height = img.size
 
             if width < 256 or height < 256:
-                print(f"Image {input_path} is smaller than 256x256. Skipping.")
+                print(f"Image {input_full_path} is smaller than 256x256. Skipping.")
                 return
 
             # Calculate the left, top, right, and bottom coordinates for cropping
@@ -206,8 +206,14 @@ def crop_image_to_256x256(input_path, output_path):
             img_cropped = img.crop((left, top, right, bottom))
 
             # Save the cropped image
-            img_cropped.save(output_path)
-            print(f"Image saved to {output_path}")
+            __, filename = os.path.split(input_full_path)
+            file_base, file_extension = os.path.splitext(filename)
+
+            new_filename = f"{file_base}_cropped{file_extension}"
+            new_output_full_path = os.path.join(output_path, new_filename)
+            
+            img_cropped.save(new_output_full_path)
+            print(f"Image saved to {new_output_full_path}")
 
     except IOError:
-        print(f"Error opening or processing image {input_path}")
+        print(f"Error opening or processing image {input_full_path}")

@@ -1,10 +1,10 @@
 from datasets import utils
 import os
 
-input_path = 'temp'
-output_path = 'temp'
+path_to_image_folder = 'datasets/raindrop'
+output_path = 'temp/'
 
-for filename in os.listdir(input_path):
+for filename in os.listdir(path_to_image_folder):
     if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
-        input_path = os.path.join(input_path, filename)
-        utils.crop_image_to_256x256(input_path, output_path)
+        path_to_image = os.path.join(path_to_image_folder, filename)
+        utils.crop_image_to_256x256(path_to_image, output_path)

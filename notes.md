@@ -5,16 +5,18 @@
 https://github.com/openai/improved-diffusion?
 - Why might Chunming's diffusion model have no initial success?
 - DDNM looks for integration friendly https://github.com/wyhuai/DDNM/blob/main/README.md
+
 # TODO
-[ ] Benchmark/baseline 10 imgs from LSUN bedroom
+[x] Benchmark/baseline 10 imgs from LSUN bedroom
 [x] Denoise a single raindrop img 2min20s GCP 1xNvidia T4
     - Inputs to DDRM model 256 x 256 images and degradation matrix H
     - Input images are expected to reside in a 'class folder' e.g. exp2/datasets/0/img1
 [X] Skip adding degradation
-    [ ] Update PSNR evaluation function. The code needs to know the where the clean image is (before noise added) for PSNR evaluation https://github.com/bahjat-kawar/ddrm/issues/3 
+    [-] Update PSNR evaluation function (Not actually required). The code needs to know the where the clean image is (before noise added) for PSNR evaluation https://github.com/bahjat-kawar/ddrm/.issues/3 
 [X] Denoise 10 raindrop images
     - OOM issues on GCP. Bumped to 16 cores/60GB ram. Took 20mins with 4 workers.
 [X] Experiment with vanilla DDRM to get better results
+[ ] Modify imageNet to test hypothesis that pretrained model with more diversity = improved denoising
 [ ] Create appropriate config.yml for raindrop dataset
 [ ] Swap out pretrained diffusion model 
     - deep gen prior Chunming with street scenes, which only applies lin transformation

@@ -16,8 +16,8 @@ def combine_images(img1_path, img2_path, output_path, spacing=10):
 
     new_img.save(output_path)
 
-path_to_exp_outputs = 'exp3/image_samples/images'
-for i in range(10):
+path_to_exp_outputs = 'exp10/image_samples/imagenet_sr4_sigma_0.0'
+for i in range(1):
     orig_img = os.path.join(path_to_exp_outputs, f'orig_{i}.png')
     modified_img = os.path.join(path_to_exp_outputs, f'{i}_-1.png')
     output_img = os.path.join(path_to_exp_outputs, f'before_after_{i}.png')

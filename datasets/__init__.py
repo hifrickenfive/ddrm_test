@@ -167,7 +167,9 @@ def get_dataset(args, config):
 
     elif config.data.dataset == 'ImageNet':
         # only use validation dataset here
-        
+        # TODO hijack path to dataste
+        # if args.data_folder:
+        #     path_to_data = os.path.join(args.exp, args.data_folder) # 
         if config.data.subset_1k:
             from datasets.imagenet_subset import ImageDataset
             dataset = ImageDataset(os.path.join(args.exp, 'datasets', 'imagenet', 'imagenet'),
