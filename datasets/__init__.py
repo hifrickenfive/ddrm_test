@@ -116,12 +116,12 @@ def get_dataset(args, config):
             else:
                 path_to_data = os.path.join(args.exp, 'datasets', "ood_{}".format(config.data.category)) # Default
 
-            #  This util clas expects that images are organized in directories, and each directory's name corresponds to the class label of images contained within it.
-            dataset = torchvision.datasets.ImageFolder(
-                path_to_data,
-                transform=transforms.Compose([partial(center_crop_arr, image_size=config.data.image_size),
-                transforms.ToTensor()])
-            )
+                #  This util clas expects that images are organized in directories, and each directory's name corresponds to the class label of images contained within it.
+                dataset = torchvision.datasets.ImageFolder(
+                    path_to_data,
+                    transform=transforms.Compose([partial(center_crop_arr, image_size=config.data.image_size),
+                    transforms.ToTensor()])
+                )
             test_dataset = dataset
         else:
             train_folder = "{}_train".format(config.data.category)
