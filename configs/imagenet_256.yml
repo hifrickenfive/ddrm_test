@@ -8,9 +8,11 @@ data:
     random_flip: true
     rescaled: true
     num_workers: 16
-    subset_1k: True
-    out_of_dist: False
-
+    # subset_1k: True
+    subset_1k: False
+    out_of_dist: True
+    # out_of_dist: True # No practical denoising effect. Just means that dataloader expects to find a dir structure os.path.join(args.exp, 'datasets', 'ood'), from which to crop a 256x256 image. See __init__.py
+ 
 model:
     type: "openai"
     in_channels: 3
