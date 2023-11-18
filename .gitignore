@@ -4,4 +4,4 @@ __pycache__/
 exp/
 exp*/
 temp/
-results/
+*scratch*

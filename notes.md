@@ -16,7 +16,7 @@ https://github.com/openai/improved-diffusion?
 [X] Denoise 10 raindrop images
     - OOM issues on GCP. Bumped to 16 cores/60GB ram. Took 20mins with 4 workers.
 [X] Experiment with vanilla DDRM to get better results
-[ ] Modify imageNet to test hypothesis that pretrained model with more diversity = improved denoising
+[X] Modify imageNet to test hypothesis that pretrained model with more diversity = improved denoising
 [ ] Create appropriate config.yml for raindrop dataset
 [ ] Swap out pretrained diffusion model 
     - deep gen prior Chunming with street scenes, which only applies lin transformation
