@@ -281,7 +281,7 @@ class Diffusion(object):
             x_orig = data_transform(self.config, x_orig) # 1, 3, 256, 256
 
             if args.no_degrade:
-                from functions.svd_replacement import Denoising # HACK. Override args.deg. Denoising H_funcs only transforms x_orig's shape
+                from functions.svd_replacement import Denoising # HACK. To create y_0 that is a copy of x_orig rather than distorting y0, which will then be denoised by DDRM
                 H_funcs = Denoising(config.data.channels, self.config.data.image_size, self.device)
                 y_0 = H_funcs.H(x_orig)
                 pinv_y_0 = x_orig
@@ -296,12 +296,23 @@ class Diffusion(object):
                 elif deg[:3] == 'inp': pinv_y_0 += H_funcs.H_pinv(H_funcs.H(torch.ones_like(pinv_y_0))).reshape(*pinv_y_0.shape) - 1
 
             for i in range(len(pinv_y_0)):
+                img_path = dataset.imgs[i][0]
+                img_filename_with_ext  = os.path.basename(img_path)
+                img_filename, __ = os.path.splitext(img_filename_with_ext)
+
                 tvu.save_image(
-                    inverse_data_transform(config, pinv_y_0[i]), os.path.join(self.args.image_folder, f"y0_{idx_so_far + i}.png")
+                    inverse_data_transform(config, pinv_y_0[i]), os.path.join(self.args.image_folder, f"y0_{idx_so_far + i}_{img_filename}.png")
                 )
                 tvu.save_image(
-                    inverse_data_transform(config, x_orig[i]), os.path.join(self.args.image_folder, f"orig_{idx_so_far + i}.png")
+                    inverse_data_transform(config, x_orig[i]), os.path.join(self.args.image_folder, f"orig_{idx_so_far + i}_{img_filename}.png")
                 )
+
+                # tvu.save_image(
+                #     inverse_data_transform(config, pinv_y_0[i]), os.path.join(self.args.image_folder, f"y0_{idx_so_far + i}.png")
+                # )
+                # tvu.save_image(
+                #     inverse_data_transform(config, x_orig[i]), os.path.join(self.args.image_folder, f"orig_{idx_so_far + i}.png")
+                # )
 
             ##Begin Denoising diffusion implicit model (DDIM) Song et al. (2021)
             x = torch.randn(
@@ -320,8 +331,11 @@ class Diffusion(object):
 
             for i in [-1]: #range(len(x)):
                 for j in range(x[i].size(0)):
+                    img_path = dataset.imgs[j][0]
+                    img_filename_with_ext  = os.path.basename(img_path)
+                    img_filename, __ = os.path.splitext(img_filename_with_ext)
                     tvu.save_image(
-                        x[i][j], os.path.join(self.args.image_folder, f"{idx_so_far + j}_{i}.png")
+                        x[i][j], os.path.join(self.args.image_folder, f"{idx_so_far + j}_{i}_{img_filename}.png")
                     )
                     if i == len(x)-1 or i == -1:
                         orig = inverse_data_transform(config, x_orig[j])
