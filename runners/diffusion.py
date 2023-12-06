@@ -104,7 +104,10 @@ class Diffusion(object):
             else:
                 raise ValueError
             if name != 'celeba_hq':
-                ckpt = get_ckpt_path(f"ema_{name}", prefix=self.args.exp)
+                ckpt = get_ckpt_path(f"ema_{name}", prefix=self.args.exp)  # default DDRM
+                # ckpt = '/home/ubuntu/guided-diffusion/output/ema_0.9999_000000.pt' # test
+                ckpt = '/home/ubuntu/guided-diffusion/output/ema_0.9999_2416000.pt' # exp2
+                # ckpt = '/home/ubuntu/guided-diffusion/output/ema_0.9999_2400000.pt' # exp3
                 print("Loading checkpoint {}".format(ckpt))
             elif name == 'celeba_hq':
                 #ckpt = '~/.cache/diffusion_models_converted/celeba_hq.ckpt'
@@ -130,8 +133,9 @@ class Diffusion(object):
                 ckpt = os.path.join(self.args.exp, "logs/imagenet/256x256_diffusion_uncond.pt")
                 if not os.path.exists(ckpt):
                     download('https://openaipublic.blob.core.windows.net/diffusion/jul-2021/256x256_diffusion_uncond.pt', ckpt)
-                
             
+            # TODO Change this to point to models
+            # chkpt = modes/256x256.pt
             model.load_state_dict(torch.load(ckpt, map_location=self.device))
             model.to(self.device)
             model.eval()
