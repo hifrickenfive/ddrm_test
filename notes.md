@@ -18,7 +18,7 @@ https://github.com/openai/improved-diffusion?
 [X] Experiment with vanilla DDRM to get better results
 [X] Modify imageNet to test hypothesis that pretrained model with more diversity = improved denoising
 [ ] Create appropriate config.yml for raindrop dataset
-[ ] Swap out pretrained diffusion model 
+[X] Swap out pretrained diffusion model 
     - deep gen prior Chunming with street scenes, which only applies lin transformation
     - degrader operator still required?
     - degradation function is still necessary energy -> step

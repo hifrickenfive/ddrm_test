@@ -77,3 +77,18 @@ def create_filename_from_args_config(args, config):
     timesteps = args.timesteps
     filename = f'{dataset}_{deg}_sig_{sigma_0}_ts_{timesteps}'
     return filename
+
+def create_before_after(img1_path, img2_path, output_path, spacing=10):
+    img1 = Image.open(img1_path)
+    img2 = Image.open(img2_path)
+
+    # Calculate the size of the combined image
+    total_width = img1.width + img2.width + spacing
+    max_height = max(img1.height, img2.height)
+
+    new_img = Image.new('RGB', (total_width, max_height))
+
+    new_img.paste(img1, (0, 0))
+    new_img.paste(img2, (img1.width + spacing, 0))
+
+    new_img.save(output_path)
